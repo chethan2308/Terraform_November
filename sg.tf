@@ -45,7 +45,7 @@ resource "aws_security_group" "ssh_security_group" {
     from_port        = 22
     to_port          = 22
     protocol         = "tcp"
-    cidr_blocks      = [var.var.ssh_location]
+    cidr_blocks      = [var.ssh_location]
   }
 
   egress {
@@ -63,7 +63,7 @@ resource "aws_security_group" "ssh_security_group" {
 # create security group for the web server
 # terraform aws create security group
 resource "aws_security_group" "webserver_security_group" {
-  name        = webserver_security_group
+  name        = "webserver_security_group"
   description = "enable http/https access on port 80/443 via alb sg and access on port 22 via ssh sg"
   vpc_id      = aws_vpc.vpc.id
 
@@ -71,7 +71,7 @@ resource "aws_security_group" "webserver_security_group" {
     description      = "http access"
     from_port        = 80
     to_port          = 80
-    protocol         = tcp
+    protocol         = "tcp"
     security_groups  = [aws_security_group.alb_security_group.id]
   }
 
@@ -79,7 +79,7 @@ resource "aws_security_group" "webserver_security_group" {
     description      = "https access"
     from_port        = 443
     to_port          = 443
-    protocol         = tcp
+    protocol         = "tcp"
     security_groups  = [aws_security_group.alb_security_group.id]
   }
 
@@ -87,7 +87,7 @@ resource "aws_security_group" "webserver_security_group" {
     description      = "ssh access"
     from_port        = 22
     to_port          = 22
-    protocol         = tcp
+    protocol         = "tcp"
     security_groups  = [aws_security_group.ssh_security_group.id]
   }
 
@@ -106,7 +106,7 @@ resource "aws_security_group" "webserver_security_group" {
 # create security group for the database
 # terraform aws create security group
 resource "aws_security_group" "database_security_group" {
-  name        = database_security_group
+  name        = "database_security_group"
   description = "enable mysql/aurora access on port 3306"
   vpc_id      = aws_vpc.vpc.id
 
@@ -114,7 +114,7 @@ resource "aws_security_group" "database_security_group" {
     description      = "enable mysql/aurora access on port 3306"
     from_port        = 3306
     to_port          = 3306
-    protocol         = tcp
+    protocol         = "tcp"
     security_groups  = [aws_security_group.alb_security_group.id]
   }
 
@@ -126,6 +126,6 @@ resource "aws_security_group" "database_security_group" {
   }
 
   tags   = {
-    Name = 
+    Name = "DB_SG"
   }
 }

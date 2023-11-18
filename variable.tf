@@ -59,5 +59,3 @@ variable "ssh_location" {
 
 
 
-
-
