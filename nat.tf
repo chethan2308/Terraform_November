@@ -1,7 +1,7 @@
 # allocate elastic ip. this eip will be used for the nat-gateway in the public subnet az1 
 # terraform aws allocate elastic ip
 resource "aws_eip" "eip_for_nat_gateway_az1" {
-  vpc =   true
+  domain = "vpc"
 
   tags   = {
     Name = "eip_for_nat_gateway_az1"
@@ -11,7 +11,7 @@ resource "aws_eip" "eip_for_nat_gateway_az1" {
 # allocate elastic ip. this eip will be used for the nat-gateway in the public subnet az2
 # terraform aws allocate elastic ip
 resource "aws_eip" "eip_for_nat_gateway_az2" {
-  vpc    = true
+  domain = "vpc"
 
   tags   = {
     Name = "eip_for_nat_gateway_az2"
@@ -25,7 +25,7 @@ resource "aws_nat_gateway" "nat_gateway_az1" {
   subnet_id     = aws_subnet.public_subnet_az1.id
 
   tags   = {
-    Name = nat_az1
+    Name = "nat_az1"
   }
 
   # to ensure proper ordering, it is recommended to add an explicit dependency
@@ -40,7 +40,7 @@ resource "aws_nat_gateway" "nat_gateway_az2" {
   subnet_id     = aws_subnet.public_subnet_az2.id
 
   tags   = {
-    Name = NAT_AZ2
+    Name = "NAT_AZ2"
   }
 
   # to ensure proper ordering, it is recommended to add an explicit dependency
@@ -66,14 +66,14 @@ resource "aws_route_table" "private_route_table_az1" {
 # associate private app subnet az1 with private route table az1
 # terraform aws associate subnet with route table
 resource "aws_route_table_association" "private_app_subnet_az1_route_table_az1_association" {
-  subnet_id         = aws_subnet.public_subnet_az1.id
+  subnet_id         = aws_subnet.private_app_subnet_az1.id
   route_table_id    = aws_route_table.private_route_table_az1.id
 }
 
 # associate private data subnet az1 with private route table az1
 # terraform aws associate subnet with route table
 resource "aws_route_table_association" "private_data_subnet_az1_route_table_az1_association" {
-  subnet_id         = aws_subnet.private_data_subnet_az1
+  subnet_id         = aws_subnet.private_data_subnet_az1.id
   route_table_id    = aws_route_table.private_route_table_az1.id
 }
 
@@ -95,7 +95,7 @@ resource "aws_route_table" "private_route_table_az2" {
 # associate private app subnet az2 with private route table az2
 # terraform aws associate subnet with route table
 resource "aws_route_table_association" "private_app_subnet_az2_route_table_az2_association" {
-  subnet_id         = aws_subnet.public_subnet_az2.id
+  subnet_id         = aws_subnet.private_app_subnet_az2.id
   route_table_id    = aws_route_table.private_route_table_az2.id
 }
 

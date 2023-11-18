@@ -48,6 +48,13 @@ variable "private_data_subnet_az2" {
     type        = string
 }
 
+# SSH security group
+variable "ssh_location" {
+    default     = "0.0.0.0/0"
+    description = "SSH SG"
+    type        = string
+}
+
 
 
 
